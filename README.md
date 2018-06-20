@@ -1,14 +1,15 @@
 # Linux-Server
-Issues
-The web application is not reachable under the AWS-server instance anymore. Should be shifted to my own server.
-Step by Step Walkthrough
-In the detailed guide below I tried to briefly document the steps I executed to get to the projects solution. The numbering and headlines should be congruent to the projects tasks 1-11. Please read through the linked sources to fully understand what is done in those steps. The walkthrough is surely far from perfect and I'm thankful for any feedback, reported errors, advice, etc. I get on this.
-
-The parts which are not necessarily needed are marked with a *, the ones which only need to be done for extra credit ('suceeds expectations') are marked with **. I used vim as text editor in this guide, but you can surely use another one like nano. Have fun!
-
-1 & 2 - Create Development Environment: Launch Virtual Machine and SSH into the server
-Source: Udacity
-
+In this project I deploy my build an item catalog project to an instance using a Linux server instance called Amazon Lightsail
+#### Process:
+1)Create an amazon account.
+2)Create an instance in lightsail.aws.amazon.com 
+3)Download putty.exe,puttygen.exe in puti.org 
+4)create static ip in lightsail and download it 
+5)Then open puttygen load your key and save with .ppk extension
+6)Open your putty
+7)create an user in ssh 
+     sudo adduser grader
+8)
 Create new development environment.
 Download private keys and write down your public IP address.
 Move the private key file into the folder ~/.ssh:
@@ -371,3 +372,6 @@ Sources: Glances and Web Host Bug
 $ sudo apt-get install python-pip build-essential python-dev
 $ sudo pip install Glances
 $ sudo pip install PySensors
+###### Note: 
+The web application is not reachable under the AWS-server instance anymore. Should be shifted to my own server.
+
