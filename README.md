@@ -1,377 +1,260 @@
-# Linux-Server
-In this project I deploy my build an item catalog project to an instance using a Linux server instance called Amazon Lightsail
-#### Process:
-1)Create an amazon account.
-2)Create an instance in lightsail.aws.amazon.com 
-3)Download putty.exe,puttygen.exe in puti.org 
-4)create static ip in lightsail and download it 
-5)Then open puttygen load your key and save with .ppk extension
-6)Open your putty
-7)create an user in ssh 
-     sudo adduser grader
-8)
-Create new development environment.
-Download private keys and write down your public IP address.
-Move the private key file into the folder ~/.ssh:
-$ mv ~/Downloads/udacity_key.rsa ~/.ssh/
-Set file rights (only owner can write and read.):
-$ chmod 600 ~/.ssh/udacity_key.rsa
-SSH into the instance:
-<pre>$ ssh -i ~/.ssh/udacity_key.rsa root@PUPLIC-IP-ADDRESS
-3 & 4 - User Management: Create a new user and give user the permission to sudo
-Source: DigitalOcean
+Linux-Server-Configuration
+In this project I deploy my build an item catalog project to an instance using a Linux server instance called Amazon Lightsail #### Process: 1)Create an amazon account. 2)Create an instance in lightsail.aws.amazon.com 3)Download putty.exe,puttygen.exe in puti.org 4)create static ip in lightsail and download it
+Project Overview
+Your task is to create a Item-Catlog that show category Items and thier Information clearly.This Project need Python, Postgrsql, Flask frame work as Backend and HTML, CSS/Bootsrap as frontend.we have to create own linux server and deploy catlog project using lamp.
 
-Create a new user:
-$ adduser NEWUSER
-Give new user the permission to sudo
-Open the sudo configuration:
-$ visudo
-Add the following line below root ALL...:
-NEWUSER ALL=(ALL:ALL) ALL
-*List all users (Source: Ask Ubuntu):
-$ cut -d: -f1 /etc/passwd
-5 - Update and upgrade all currently installed packages
-Source: Ask Ubuntu
+Table Of Contents
+Demo
+Software Requirements
+Installation
+Output
+References
+Bug And Feature Requests
+Demo
+To see run project instantly click here.
+Software Requirements
+AWS account with lightsail service activated.
+Python, Pip, SQLAlchemy, Apache2.
+Flask, Virtualenv, Requests, Oauth2client.
+Installation
+Step 1:
+Create Instance:
 
-Update the list of available packages and their versions:
-$ sudo apt-get update
-Install newer vesions of packages you have:
-$ sudo sudo apt-get upgrade
-5** - Include cron scripts to automatically manage package updates
-Source: Ubuntu documentation
+To Create Instance follow steps.
+Sign in to aws console and from All Services, select lightsail.
+Now click on create Instance button.
+select as in image.
+now click on create button.you will see this page.
+Step 2:
+Server Config:
 
-Install the unattended-upgrades package:
-$ sudo apt-get install unattended-upgrades
-Enable the unattended-upgrades package:
-$ sudo dpkg-reconfigure -plow unattended-upgrades
-6 - Change the SSH port from 22 to 2200 and configure SSH access
-Source: Ask Ubuntu
+Go to top right menu Click on Accounts.you will see this page. Download default key on to desktop.
 
-Change ssh config file:
+Go to Home, then Networking from menu.Now Create static ip.
 
-Open the config file:
-$ vim /etc/ssh/sshd_config
+Download putty for better performance.like no server disconnections etc...
 
-Change to Port 2200.
+Install putty and open puttyGen.click on load.
 
-Change PermitRootLogin from without-password to no.
+select file downloaded from shh-keys eg: LightsailDefaultPrivateKey-ap-south-1.pem
 
-To get more detailed logging messasges, open /var/log/auth.log and change LogLevel from INFO to VERBOSE.
-Temporalily change PasswordAuthentication from no to yes.
+click ok.then save private, yes, give some name.. save on desktop.then close it.
 
-Append UseDNS no.
+now you will see a .ppk file on desktop.
 
-Append AllowUsers NEWUSER.
-Note: All options on UNIXhelp
+Open Putty. give staticIP of instance as hostname.
 
-Restart SSH Service:
-$ /etc/init.d/ssh restart or # service sshd restart
+From left tree, click on SSH. after, Auth. You will see browser button.
 
-Create SSH Keys:
-Source: DigitalOcean
+click on browser, and select .ppk file and click on open.
 
-Generate a SSH key pair on the local machine:
-$ ssh-keygen
+press No. username ubuntu
 
-Copy the public id to the server:
-$ ssh-copy-id username@remote_host -p**_PORTNUMBER_**
+Now you see linux environment Demo.
 
-Login with the new user:
-$ ssh -v grader@PUBLIC-IP-ADDRESS -p2200
+Step 3:
+Create User Grader & Config:
 
-Open SSHD config:
-$ sudo vim /etc/ssh/sshd_config
+Use following commands,
 
-Change PasswordAuthentication back from yes to no.
+update/upgrade all packages
+   ubuntu@ip-172-26-0-113:~$ sudo apt update  
+create user
 
-*Get rid of the warning message sudo: unable to resolve host ... when sudo is executed:
-Source: Ask Ubuntu
+ubuntu@ip-172-26-0-113:~$ sudo adduser grader
 
-Open $ vim /etc/hostname.
+Grant Permissions
+ubuntu@ip-172-26-0-113:~$ sudo nano /etc/sudoers
 
-Copy the hostname.
+Below the Root user append the following line demo.
+grader ALL=(ALL:ALL) ALL
 
-Append the hostname to the first line:
-$ sudo sudonano /etc/hosts
+Step 4:
+Generate ssh key pair for grader:
 
-Simplify SSH login:
-Logout of the SSH instance:
-$ exit
+open command prompt, use command ssh-keygen
 
-Open the SSH config file on your local machine:
-$ sudo vim .ssh/config
+press enter, again enter, again enter, again enter.This will generate public and private ssh keys
 
-Add the following lines:
-Host NEWHOSTNAME HostName PUPLIC-IP-ADDRESS Port 2200 User NEWUSER
+Now go to local disk C, and User, your computerName, open .ssh file.
 
-Now, you can login into the server more quickly:
-$ ssh NEWHOSTNAME
+You will see id_rsa and id_rsa.pub.
 
-*Handle the message System restart required after login:
-Source: Super User
+open id_rsa.pub and keep aside.
 
-List all packages which cause the reboot:
-$ cat /var/run/reboot-required.pkgs
+Step 5:
+Connect to grader using privateKey
 
-List everything with high security issues:
-$ xargs aptitude changelog < /var/run/reboot-required.pkgs | grep urgency=high
+In Command prompt, use command to connect to linux machine via SSH to user grader with private key generated.(id_rsa) C:\Users\vijaybabu>ssh -i .ssh/id_rsa grader@13.126.254.104
+next to grader@ use your staticIp of Instance.
+Step 6:
+Changing SSH port to 2200
 
-If wanted or needed, reboot the system:
-$ sudo shutdown -r now
-Note: More info on rebooting on Ask Ubuntu.
+use command to edit sshd config file. grader@ip-172-26-0-113:~$ sudo nano /etc/ssh/sshd_config
+Now in this,change port from 22 to 2200.demo
+restart server ssh using command, grader@ip-172-26-0-113:~$ sudo service ssh restart
+Note: Before Logging using ssh add custom TCP port 2200 and add custom UDP port 123 under lightsail firewall in networking tab in lightsail instance console.demo
+Now login, using private key[id_rsa] with port 2200 demo.
+C:\Users\vijaybabu>ssh -i .ssh/id_rsa -p 2200 grader@13.126.254.104
 
-7 - Configure the Uncomplicated Firewall (UFW) to only allow incoming connections for SSH (port 2200), HTTP (port 80), and NTP (port 123)
-Source: Ubuntu documentation
+Step 7:
+Disabling ssh login as root
 
-Turn UFW on with the default set of rules:
-$ sudo ufw enable
-*Check the status of UFW:
-$ sudo ufw status verbose
-Allow incoming TCP packets on port 2200 (SSH):
-$ sudo ufw allow 2200/tcp
-Allow incoming TCP packets on port 80 (HTTP):
-$ sudo ufw allow 80/tcp
-Allow incoming UDP packets on port 123 (NTP):
-$ sudo ufw allow 123/udp
-7** - Configure Firewall to monitor for repeated unsuccessful login attempts and ban attackers
-Source: DigitalOcean
+grader@ip-172-26-0-113:~$ sudo nano /etc/ssh/sshd_config
 
-Install Fail2ban:
-$ sudo apt-get install fail2ban
-Copy the default config file:
-$ sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
-Check and change the default parameters:
-Open the local config file:
-$ sudo vim /etc/fail2ban/jail.local
-Set the following Parameters:
-  set bantime  = 1800  
-  destemail = YOURNAME@DOMAIN  
-  action = %(action_mwl)s  
-  under [ssh] change port = 2220  
-Note: In the next three steps iptables is installed. However, the before installed UFW is actually a frontend for iptables and is set up already. So configuring iptables separately (as I did by just following the guide at DigitalOcean) would be a redundant step. So just install sendmail and go on with step 7.
+make change PermitRootLogin Prohibited Pasword to no
+Step 8:
+Configurating UFW Firewall
 
-Install needed software for our configuration:
-$ sudo apt-get install sendmail iptables-persistent
-Set up a basic firewall only allowing connections from the above ports:
-$ sudo iptables -A INPUT -i lo -j ACCEPT
-$ sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
-$ sudo iptables -A INPUT -p tcp --dport 2200 -j ACCEPT
-$ sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
-$ sudo iptables -A INPUT -p udp --dport 123 -j ACCEPT
-$ sudo iptables -A INPUT -j DROP
-*Check the current firewall rules:
-$ sudo iptables -S
-Stop the service:
-$ sudo service fail2ban stop
-Start it again:
-$ sudo service fail2ban start
-8 - Configure the local timezone to UTC
-Source: Ubuntu documentation
+Below commands will allow all required Ports and Enables the ufw.
+   sudo ufw allow 80/tcp
+   sudo ufw allow 123/udp
+   sudo ufw enable
+check ufw status with command, grader@ip-172-26-0-113:~$ sudo ufw status
+Step 9:
+Change Time Zone to UTC
 
-Open the timezone selection dialog:
-$ sudo dpkg-reconfigure tzdata
-Then chose 'None of the above', then UTC.
-*Setup the ntp daemon ntpd for regular and improving time sync:
-$ sudo apt-get install ntp
-*Chose closer NTP time servers:
-Open the NTP configuration file:
-$ sudo vim /etc/ntp.conf
-Open http://www.pool.ntp.org/en/ and choose the pool zone closest to you and replace the given servers with the new server list.
-9 - Install and configure Apache to serve a Python mod_wsgi application
-Source: Udacity
+Use command, sudo dpkg-reconfigure tzdata
+click enter, again enter. its show,
+   Current default time zone: 'Etc/UTC'
+   Local time is now:      Tue Jun 19 15:40:48 UTC 2018.
+   Universal Time is now:  Tue Jun 19 15:40:48 UTC 2018.
+Step 10:
+Apache2 Server Setup:
 
-Install Apache web server:
-$ sudo apt-get install apache2
-Open a browser and open your public ip address, e.g. http://52.25.0.41/ - It should say 'It works!' on the top of the page.
-Install mod_wsgi for serving Python apps from Apache and the helper package python-setuptools:
-$ sudo apt-get install python-setuptools libapache2-mod-wsgi
-Restart the Apache server for mod_wsgi to load:
-$ sudo service apache2 restart
-*Get rid of the message "Could not reliably determine the servers's fully qualified domain name" after restart Source: Ask Ubuntu
-Create an empty Apache config file with the hostname:
-$ echo "ServerName HOSTNAME" | sudo tee /etc/apache2/conf-available/fqdn.conf
-Enable the new config file:
-$ sudo a2enconf fqdn
-11 - Install git, clone and setup your Catalog App project
-As this is by far the biggest project task, it is split in several parts.
+use below commands to install apache2, grader@ip-172-26-0-113:~$ sudo apt-get install apache2
+for mod_wsgi, sudo apt-get install python-setuptools libapache2-mod-wsgi
+To Enable mod_wsgi, use command grader@ip-172-26-0-113:~$ sudo a2enmod wsgi
+NOTE: Dont forget to restart server apache2 if any changes made to it.
 
-11.1 - Install and configure git
-Source: GitHub
+Step 11:
+Creating FlaskApp
 
-Install Git:
-$ sudo apt-get install git
-Set your name, e.g. for the commits:
-$ git config --global user.name "YOUR NAME"
-Set up your email address to connect your commits to your account:
-$ git config --global user.email "YOUR EMAIL ADDRESS"
-11.2 - Setup for deploying a Flask Application on Ubuntu VPS
-Source: DigitalOcean
+use following commands,
+  grader@ip-172-26-0-113:~$  cd /var/www 
+  grader@ip-172-26-0-113:~$  sudo mkdir FlaskApp
+Now, move to FlaskApp, grader@ip-172-26-0-113:/var/www$ cd FlaskApp
 
-Extend Python with additional packages that enable Apache to serve Flask applications:
-$ sudo apt-get install libapache2-mod-wsgi python-dev
-Enable mod_wsgi (if not already enabled):
-$ sudo a2enmod wsgi
-Create a Flask app:
-Move to the www directory:
-$ cd /var/www
-Setup a directory for the app, e.g. catalog:
-$ sudo mkdir catalog
-$ cd catalog and $ sudo mkdir catalog
-$ cd catalog and $ sudo mkdir static templates
-Create the file that will contain the flask application logic:
-$ sudo nano __init__.py
-Paste in the following code:
-python from flask import Flask app = Flask(__name__) @app.route("/") def hello(): return "Veni vidi vici!!" if __name__ == "__main__": app.run()
-Install Flask
-Install pip installer:
-$ sudo apt-get install python-pip
-Install virtualenv:
-$ sudo pip install virtualenv
-Set virtual environment to name 'venv':
-$ sudo virtualenv venv
-Enable all permissions for the new virtual environment (no sudo should be used within):
-Source: Stackoverflow
-$ sudo chmod -R 777 venv
-Activate the virtual environment:
-$ source venv/bin/activate
-Install Flask inside the virtual environment:
-$ pip install Flask
-Run the app:
-$ python __init__.py
-Deactivate the environment:
-$ deactivate
-Configure and Enable a New Virtual Host#
-Create a virtual host config file
-$ sudo nano /etc/apache2/sites-available/catalog.conf
-Paste in the following lines of code and change names and addresses regarding your application:
-  <VirtualHost *:80>
-      ServerName PUBLIC-IP-ADDRESS
-      ServerAdmin admin@PUBLIC-IP-ADDRESS
-      WSGIScriptAlias / /var/www/catalog/catalog.wsgi
-      <Directory /var/www/catalog/catalog/>
-          Order allow,deny
-          Allow from all
-      </Directory>
-      Alias /static /var/www/catalog/catalog/static
-      <Directory /var/www/catalog/catalog/static/>
-          Order allow,deny
-          Allow from all
-      </Directory>
-      ErrorLog ${APACHE_LOG_DIR}/error.log
-      LogLevel warn
-      CustomLog ${APACHE_LOG_DIR}/access.log combined
-  </VirtualHost>
-Enable the virtual host:
-$ sudo a2ensite catalog
-Create the .wsgi File and Restart Apache
-Create wsgi file:
-$ cd /var/www/catalog and $ sudo vim catalog.wsgi
-Paste in the following lines of code:
-  #!/usr/bin/python
-  import sys
-  import logging
-  logging.basicConfig(stream=sys.stderr)
-  sys.path.insert(0,"/var/www/catalog/")
-  
-  from catalog import app as application
-  application.secret_key = 'Add your secret key'
-Restart Apache:
-$ sudo service apache2 restart
-11.3 - Clone GitHub repository and make it web inaccessible
-Clone project 3 solution repository on GitHub:
-$ git clone https://github.com/stueken/FSND-P3_Music-Catalog-Web-App.git
-Move all content of created FSND-P3_Music-Catalog-Web-App directory to /var/www/catalog/catalog/-directory and delete the leftover empty directory.
-Make the GitHub repository inaccessible:
-Source: Stackoverflow
-Create and open .htaccess file:
-$ cd /var/www/catalog/ and $ sudo vim .htaccess
-Paste in the following:
-RedirectMatch 404 /\.git
-11.4 - Install needed modules & packages
-Activate virtual environment:
-$ source venv/bin/activate
-Install httplib2 module in venv:
-$ pip install httplib2
-Install requests module in venv:
-$ pip install requests
-*Install flask.ext.seasurf (only seems to work when installed globally):
-$ *sudo pip install flask-seasurf
-Install oauth2client.client:
-$ sudo pip install --upgrade oauth2client
-Install SQLAlchemy:
-$ sudo pip install sqlalchemy
-Install the Python PostgreSQL adapter psycopg:
-$ sudo apt-get install python-psycopg2
-10 - Install and configure PostgreSQL
-Source: DigitalOcean (alternatively, nice short guide on Kill The Yak as well)
+tree looks like,
 
-Install PostgreSQL:
-$ sudo apt-get install postgresql postgresql-contrib
-Check that no remote connections are allowed (default):
-$ sudo vim /etc/postgresql/9.3/main/pg_hba.conf
-Open the database setup file:
-$ sudo vim database_setup.py
-Change the line starting with "engine" to (fill in a password):
-python engine = create_engine('postgresql://catalog:PW-FOR-DB@localhost/catalog')
-Change the same line in application.py respectively
-Rename application.py:
-$ mv application.py __init__.py
-Create needed linux user for psql:
-$ sudo adduser catalog (choose a password)
-Change to default user postgres:
-$ sudo su - postgre
-Connect to the system:
-$ psql
-Add postgre user with password:
-Sources: Trackets Blog and Super User
-Create user with LOGIN role and set a password:
-# CREATE USER catalog WITH PASSWORD 'PW-FOR-DB'; (# stands for the command prompt in psql)
-Allow the user to create database tables:
-# ALTER USER catalog CREATEDB;
-*List current roles and their attributes: # \du
-Create database:
-# CREATE DATABASE catalog WITH OWNER catalog;
-Connect to the database catalog # \c catalog
-Revoke all rights:
-# REVOKE ALL ON SCHEMA public FROM public;
-Grant only access to the catalog role:
-# GRANT ALL ON SCHEMA public TO catalog;
-Exit out of PostgreSQl and the postgres user:
-# \q, then $ exit
-Create postgreSQL database schema:
-$ python database_setup.py
-11.5 - Run application
-Restart Apache:
-$ sudo service apache2 restart
-Open a browser and put in your public ip-address as url, e.g. 52.25.0.41 - if everything works, the application should come up
-*If getting an internal server error, check the Apache error files:
-Source: A2 Hosting
-View the last 20 lines in the error log: $ sudo tail -20 /var/log/apache2/error.log
-*If a file like 'g_client_secrets.json' couldn't been found:
-Source: Stackoverflow
-11.6 - Get OAuth-Logins Working
-Source: Udacity and Apache
+ |----FlaskApp
+ |---------html
+Step 12:
+Install Git
 
-Open http://www.hcidata.info/host2ip.cgi and receive the Host name for your public IP-address, e.g. for 52.25.0.41, its ec2-52-25-0-41.us-west-2.compute.amazonaws.com
-Open the Apache configuration files for the web app: $ sudo vim /etc/apache2/sites-available/catalog.conf
-Paste in the following line below ServerAdmin:
-ServerAlias HOSTNAME, e.g. ec2-52-25-0-41.us-west-2.compute.amazonaws.com
-Enable the virtual host:
-$ sudo a2ensite catalog
-To get the Google+ authorization working:
-Go to the project on the Developer Console: https://console.developers.google.com/project
-Navigate to APIs & auth > Credentials > Edit Settings
-add your host name and public IP-address to your Authorized JavaScript origins and your host name + oauth2callback to Authorized redirect URIs, e.g. http://ec2-52-25-0-41.us-west-2.compute.amazonaws.com/oauth2callback
-To get the Facebook authorization working:
-Go on the Facebook Developers Site to My Apps https://developers.facebook.com/apps/
-Click on your App, go to Settings and fill in your public IP-Address including prefixed hhtp:// in the Site URL field
-To leave the development mode, so others can login as well, also fill in a contact email address in the respective field, "Save Changes", click on 'Status & Review'
-11.7** - Install Monitor application Glances
-Sources: Glances and Web Host Bug
+To install git use command, grader@ip-172-26-0-113:/var/www/FlaskApp$ sudo apt-get install git
+Step 13:
+Install PostgreSQL
 
-$ sudo apt-get install python-pip build-essential python-dev
-$ sudo pip install Glances
-$ sudo pip install PySensors
-###### Note: 
-The web application is not reachable under the AWS-server instance anymore. Should be shifted to my own server.
+Install postgresql and setup, use commands grader@ip-172-26-0-113:/var/www/FlaskApp$ sudo apt-get install postgresql
+login to postgres user and psql shell,
+grader@ip-172-26-0-113:/var/www/FlaskApp$ sudo -i -u postgres psql
 
+Create new user catalog with password 'password', use commands
+CREATE USER catalog WITH PASSWORD 'password';
+
+Permissions for user to createdb,
+ALTER USER catalog CREATEDB;
+
+Create a database named catalog with OwnerUser catalog,
+CREATE DATABASE catalog WITH OWNER catalog;
+
+Switch to database catalog,
+\c catalog
+
+Revoke all permission to public ,
+REVOKE ALL ON SCHEMA public FROM public;
+
+Give schema permission to user catalog ,
+GRANT ALL ON SCHEMA public TO catalog;
+
+close and exit from postgres user,
+    postgres@ip-172-26-0-113:~$ exit
+    grader@ip-172-26-0-113:~$
+Step 14:
+Use Git Repository Catalog project file
+
+In that direcory clone your github repository grader@ip-172-26-0-113:/var/www/FlaskApp$ sudo git clone your Github Repository Link
+Rename your repository to FlaskApp, using command grader@ip-172-26-0-113:/var/www/FlaskApp$ sudo mv repositoryName FlaskApp
+Now move to respository Directory, Rename your project file to init.py using command grader@ip-172-26-0-113:/var/www/FlaskApp/FlaskApp$ sudo mv projectfileName.py __init__.py
+I Occured an Error, While accesssing the client_secrets.json file, To Solve that, i used to replace Client_ID with follow, grader@ip-172-26-0-113:/var/www/FlaskApp/FlaskApp/$ sudo nano __init__.py
+   PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
+   json_url = os.path.join(PROJECT_ROOT, 'client_secrets.json')
+   CLIENT_ID = json.load(open(json_url))['web']['client_id']
+Use json_url instead client_secrets.json in script.
+Use this line to Replace database connection in init.py and dbSetup fileName.py engine = create_engine('postgresql://catalog:password@localhost/catalog')
+NOTE catalog is user in postgres and 'password' is password of user catalog.
+Now you are ready with your applicatiom.
+Step 15:
+Configure and Enable a New Virtual Host
+
+use below command, edit conf file sudo nano /etc/apache2/sites-available/FlaskApp.conf
+Now add below CODE in it.
+<VirtualHost *:80>
+	ServerName mywebsite.com
+	ServerAdmin admin@mywebsite.com
+	WSGIScriptAlias / /var/www/FlaskApp/flaskapp.wsgi
+	<Directory /var/www/FlaskApp/FlaskApp/>
+		Order allow,deny
+		Allow from all
+	</Directory>
+	Alias /static /var/www/FlaskApp/FlaskApp/static
+	<Directory /var/www/FlaskApp/FlaskApp/static/>
+		Order allow,deny
+		Allow from all
+	</Directory>
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	LogLevel warn
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+Enable the virtual host. sudo a2ensite FlaskApp
+Disabling the default apache2 page. sudo a2dissite 000-default.conf
+Step 16:
+Create the .wsgi File
+
+cd /var/www/FlaskApp
+sudo nano flaskapp.wsgi 
+Add the following code.
+ #!/usr/bin/python
+ import sys
+ import logging
+ logging.basicConfig(stream=sys.stderr)
+ sys.path.insert(0,"/var/www/FlaskApp/")
+
+ from FlaskApp import app as application
+ application.secret_key = 'Add your secret key'
+press ctrl+x to save, y and enter
+Step 17:
+Installing require modules
+
+You can either install all modules on your machine or create a virtual environment for the project and install the modules grader@ip-172-26-0-113:/var/www/FlaskApp/FlaskApp$ sudo pip install flask sqlalchemy psycopg2 requests oauth2client
+for details visit here.
+Setting up your Google Oauth2 for details visit here.
+
+Make these changes to your project in console.developers.google.com
+replace IP by your StaticIP of Instance.
+Javascript origin  http://IP.xip.io
+
+redirect URI 
+
+http://IP.xip.io/login
+
+http://IP.xip.io/gconnect
+
+http://IP.xip.io/callback
+NOTE: xip.io is a free DNS which will be the same as using IP address Demo.
+Step 18:
+Restart server
+
+sudo service apache2 restart
+
+Output
+-Use below server details to run project ItemCatalog via private server,
+
+Server Static IP Address 13.126.254.104
+
+Hosted site Url http://13.126.254.104.xip.io/
+To sse Output Click me.
+References
+stack overflow to errors retriving.
+Deploying flask application using postgres, i followed Digital Ocean.
