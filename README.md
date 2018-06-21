@@ -112,37 +112,37 @@ AWS account with lightsail service activated.
 Python, Pip,Postgres,httplib2, SQLAlchemy, Apache2.										
 Flask, Virtualenv, Requests, Oauth2client.
 
-####### Installation Process for softwares:
+###### Installation Process for softwares:
 
--- sudo apt-get install apache2		
+	sudo apt-get install apache2		
 
--- sudo apt-get install python-setuptools libapache2-mod-wsgi
+	 sudo apt-get install python-setuptools libapache2-mod-wsgi
 
--- sudo a2enmod wsgi
+	 sudo a2enmod wsgi
 
--- cd /var/www
+	 cd /var/www
 
--- sudo mkdir FlaskApp
+	 sudo mkdir FlaskApp
 
--- sudo apt-get install git
+	 sudo apt-get install git
 
--- sudo apt-get install python-pip virtualenv
+	 sudo apt-get install python-pip virtualenv
 
--- sudo virtualenv venv
+	 sudo virtualenv venv
 
--- sudo pip install Flask
+	 sudo pip install Flask
 
--- sudo pip install postgresql oauth2client httplib2 requests psycopg2
+	 sudo pip install postgresql oauth2client httplib2 requests psycopg2
 
--- cd FlaskApp	
+	 cd FlaskApp	
 
 Rename your repository to FlaskApp to __init__.py
 
--- sudo mv project.py __init__.py
+	 sudo mv project.py __init__.py
 
 In that directory clone your github repository
 
--- sudo git clone 'https://github.com/username/filename.git'
+	 sudo git clone 'https://github.com/username/filename.git'
 
 Error : While accesssing the client_secrets.json file
 
@@ -152,35 +152,35 @@ CLIENT_ID = json.load(open(json_url))['web']['client_id']
 
 Replace client_secrets.json with json_url in scriptfile	
 
--- sudo apt-get install postgresql
+	 sudo apt-get install postgresql
 
--- sudo su - postgres
+	 sudo su - postgres
 
--- psql
+	 psql
 
 Now we have to create user
 
--- CREATE USER catalog WITH PASSWORD 'password';
+	 CREATE USER catalog WITH PASSWORD 'password';
 
-create user
+Create user
 
--- ALTER USER catalog CREATEDB;
+	ALTER USER catalog CREATEDB;
 
 ALTER USER
 
--- CREATE DATABASE catalog WITH OWNER catalog;
+	 CREATE DATABASE catalog WITH OWNER catalog;
 
 database created
 
 Switch to database catalog
 
--- \c catalog  
+	\c catalog  
 
--- REVOKE ALL ON SCHEMA public FROM public;
+	 REVOKE ALL ON SCHEMA public FROM public;
 
 REVOKE
 
--- GRANT ALL ON SCHEMA public TO catalog;
+	 GRANT ALL ON SCHEMA public TO catalog;
 
 \q and type exit
 
@@ -210,13 +210,13 @@ Configure and Enable a New Virtual Host, then type the following code in the she
  	CustomLog ${APACHE_LOG_DIR}/access.log combined											
 </VirtualHost>
 
--- sudo a2ensite FlaskApp
+	 sudo a2ensite FlaskApp
 
--- sudo a2dissite 000-default.conf
+	 sudo a2dissite 000-default.conf
 
 ###### .wsgi file
 
--- sudo nano flaskapp.wsgi
+	 sudo nano flaskapp.wsgi
 
 Then add the below code
 
@@ -242,13 +242,13 @@ Then add the below code
  
 ###### FINAL STEP:										
 
--- sudo service apache2 restart
+	 sudo service apache2 restart
 
 Then go to webbrowser and type your ipaddress finaly we get our project.
 
 **** My server Details
 
-    Server static IP Address 13.232.39.180
+       Server static IP Address 13.232.39.180
     
 **** Grader Key 
 
@@ -280,15 +280,15 @@ ex4pTcxTvHRquF0RspeL4s9v//1DQibDvrmvVpU9iYEJ9PV9Lv5+XRNK0Kzlv6uk
 HE0hv/m0hKjUubCb8sCFe1vIum34I3dtWQB0YChQjp8F7rFP5oA=									
 -----END RSA PRIVATE KEY-----
 
-***Grader Password								
+#### Grader Password								
 
    unix	
    
-***OUTPUT:								
+#### OUTPUT:								
 
 CLICK HERE http://13.232.39.180.xip.io/
 
-###### Reference used:																		
+#### Reference used:																		
 https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps
  
 
