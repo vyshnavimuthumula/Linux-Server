@@ -1,12 +1,16 @@
 # Linux-Server-Configuration
 In this project I deploy my build an item catalog project to an instance using a Linux server instance called Amazon Lightsail
+
 ### Process:
 
 #### Step-1
 
-1)Create an amazon account. 														
-2)Create an instance in lightsail.aws.amazon.com											
-3)Download putty.exe,puttygen.exe in puti.org 						
+1)Create an amazon account. 	
+
+2)Create an instance in lightsail.aws.amazon.com	
+
+3)Download putty.exe,puttygen.exe in puti.org 		
+
 --Open Putty. give staticIP of instance as hostname.											
 select file downloaded from shh-keys eg: LightsailDefaultPrivateKey-ap-south-1.pem							
 click ok.then save private, yes, give some name.. save on desktop.then close it.						
