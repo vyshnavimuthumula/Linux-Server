@@ -85,7 +85,7 @@ Then change it.
 
 	sudo nano /etc/ssh/sshd_config	
 	
-	########## make change PermitRootLogin no
+######### make change PermitRootLogin no
 	
 16)Uncomplicated firewall(ufw) enbling:
 
@@ -150,7 +150,9 @@ AWS account with lightsail service activated.
 
 	 sudo pip install postgresql oauth2client httplib2 requests psycopg2
 
-	 cd FlaskApp	
+	 cd /var/www/FlaskApp
+	 
+	 sudo rm -r FlaskApp
 
 Rename your repository to FlaskApp to __init__.py
 
@@ -159,6 +161,21 @@ Rename your repository to FlaskApp to __init__.py
 In that directory clone your github repository
 
 	 sudo git clone 'https://github.com/username/filename.git'
+	
+Check once your files added or not							
+
+Type ls 
+
+Changing database in both database_setup.py and init.py
+
+	sudo nano database_setup.py
+Open 
+
+https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps
+
+Use this line to Replace database connection in init.py and database_setup.py
+
+	engine = create_engine('postgresql://catalog:password@localhost/catalog')
 
 Error : While accesssing the client_secrets.json file
 
@@ -262,6 +279,10 @@ Then add the below code
 
 Then go to webbrowser and type your ipaddress finaly we get our project.
 
+For error checking :
+
+	sudo nano /var/log/apache2/error.log
+	
 **** My server Details
 
        Server static IP Address 13.232.39.180
