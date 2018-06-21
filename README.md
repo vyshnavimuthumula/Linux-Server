@@ -108,9 +108,16 @@ Then change it.
 #### Step-2																				
 ##### Software Requirements:
 
-AWS account with lightsail service activated.											
-Python, Pip,Postgres,httplib2, SQLAlchemy, Apache2.										
-Flask, Virtualenv, Requests, Oauth2client.
+AWS account with lightsail service activated.
+1)Python Pip		
+2)Postgres				
+3)httplib2					
+4)SQLAlchemy						
+5)Apache2																
+6)Flask													
+7)Virtualenv														
+8)Requests													
+9)Oauth2client
 
 ###### Installation Process for softwares:
 
